@@ -142,3 +142,5 @@ This is a lua script similar to the c++ version, it draws a square on the screen
  - LiredDev - Creator and maintainer
  ## Open-Source
   you can download the source and modify it however you like. You could also suggest features or fixes i would appreciate that.
+ ## Documentation
+  i will work on creating a documentation once i feel like i added all the necessary features.
