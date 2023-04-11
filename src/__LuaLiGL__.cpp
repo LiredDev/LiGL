@@ -1,7 +1,6 @@
 #include <string>
 #include <iostream>
-#include <LiGL/RenderWindow.h>
-#include <LiGL/Keyboard.h>
+#include <LiGL/LiGL.h>
 
 extern "C" {
 	#include "lua/lua.h"
