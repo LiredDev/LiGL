@@ -1,6 +1,5 @@
-#include <LiGL/RenderWindow.h>
 #include <iostream>
-#include <LiGL/Keyboard.h>
+#include <LiGL/LiGL.h>
 
 #pragma comment(lib, "opengl32.lib")
 
