@@ -5,7 +5,7 @@ Sure, here's a README.md file for your LiGL project:
  - Easy-to-use API for creating windows and drawing graphics
 - Supports Lua scripting for creating windows and handling events
  ## Installation
- To use LiGL in your project, you need to download the source code and compile it. The library is written in C++ and Lua, so you need a C++ compiler and the Lua library installed on your system.
+ To use LiGL in your project, you need to download the source code and compile it. The library is written in C++, so you need a C++ compiler installed on your system.
  Once you have downloaded the source code, you can compile it using the following commands:
 
 Run this to compile the c++ version, the ouput will be in the build folder.
