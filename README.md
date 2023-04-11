@@ -1,23 +1,10 @@
-Sure, here's a README.md file for your LiGL project:
  # LiGL - Lired Graphics Library
  LiGL is a library for creating windows and drawing graphics on them. It is similar to SFML, but the key feature of LiGL is that it also supports Lua. This means that you can use Lua to create windows, draw graphics on them, and handle events.
  ## Features
  - Easy-to-use API for creating windows and drawing graphics
 - Supports Lua scripting for creating windows and handling events
  ## Installation
- To use LiGL in your project, you need to download the source code and compile it. The library is written in C++, so you need a C++ compiler installed on your system.
- Once you have downloaded the source code, you can compile it using the following commands:
-
-Run this to compile the c++ version, the ouput will be in the build folder.
-```
-make Compile
-```
-For mingw run the following:
-```
-mingw32-make Compile
-```
-This will create a  `libLiGL.a` file in the  `build`  directory, which you can link to your project.
-
+ You can directly use the header files no need for to compile the source. However you can compile the example provided just run the follwing commands:
 to Compile the test file you can run the following:
 ```
 make
@@ -26,6 +13,7 @@ for mingw:
 ```
 mingw32-make
 ```
+This will create a  `LiREX.exe` file in the  `build/LiREX`  directory. After it is compiled it will automatically run the program.
 
 Run this to compile the Lua version, the ouput will be in the build folder.
 ```
@@ -35,18 +23,10 @@ For mingw run the following:
 ```
 mingw32-make allLua
 ```
-This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which is the lua interpreter that has all the features in the c++ version.
+This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which is the lua interpreter that has all the features in the c++ version. After it is compiled it will automatically run the test file.
 
-to run the test file you can run the following:
-```
-make runLuaLiGL
-```
-for mingw:
-```
-mingw32-make runLuaLiGL
-```
  ## Usage
- To use LiGL in your project, you need to include the  `LiGL.h`  header file and link to the  `libLiGL.a`  library. Here's an example program that creates a window and draws a red circle in the center:
+ To use LiGL in your project, you need to include the  `LiGL.h`  header file. Here's an example program that creates a window and draws a red circle in the center:
 ```cpp
 #include <LiGL/RenderWindow.h>
 #include <iostream>
