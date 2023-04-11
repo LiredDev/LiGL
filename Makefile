@@ -8,7 +8,7 @@ CompileLiGL:
 	del __LiREX__.o
 
 runLiGL:
-	"E:\Projects\LiGL - Lired Graphics Library (C++ & Lua)\build\LiREX\LiREX.exe"
+	".\build\LiREX\LiREX.exe"
 
 CompileLuaLiGL:
 	g++ -I include -c src/__LuaLiGL__.cpp -fpermissive
@@ -17,4 +17,4 @@ CompileLuaLiGL:
 	move LuaLiGL.exe "build/LuaLiGL"
 
 runLuaLiGL:
-	"E:\Projects\LiGL - Lired Graphics Library (C++ & Lua)\build\LuaLiGL\LuaLiGL.exe" test.lua
+	".\build\LuaLiGL\LuaLiGL.exe" test.lua
