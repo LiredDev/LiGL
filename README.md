@@ -28,9 +28,8 @@ This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which
  ## Usage
  To use LiGL in your project, you need to include the  `LiGL.h`  header file. Here's an example program that creates a window and draws a red circle in the center:
 ```cpp
-#include <LiGL/RenderWindow.h>
+#include <LiGL/LiGL.h>
 #include <iostream>
-#include <LiGL/Keyboard.h>
 
 #pragma comment(lib, "opengl32.lib")
 
