@@ -100,7 +100,7 @@ int main()
 ```
 This program creates a window using the  `Window`  class, draws a red square using the  `DrawPoint`  function, and displays the window using the  `Display`  method. The program then enters a loop that waits for the window to close, and calls the  `pollEvents`  method to handle events.
  You can also use Lua to create windows and handle events. Here's an example Lua script that creates a window and displays a message when the window is closed:
-```
+```lua
 -- Create a window with a width of 800 pixels and a height of 600 pixels
 local window = Window(800, 600, "Window Title", false, true)
 
