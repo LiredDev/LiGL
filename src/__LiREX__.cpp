@@ -1,11 +1,12 @@
+#include <LiGL/RenderWindow.h>
 #include <iostream>
-#include <LiGL/LiGL.h>
+#include <LiGL/Keyboard.h>
 
 #pragma comment(lib, "opengl32.lib")
 
 int main()
 {
-    Window mainWindow(800, 600, "My Rendering Engine", true, true);
+    Window mainWindow(800, 600, "LiREX", false, false);
 
     int pos = 50;
 
@@ -37,7 +38,7 @@ int main()
 
         // This is your main loop, where you can call Clear(), Draw(), and Display() functions
         mainWindow.Clear(0.0f, 0.0f, 0.4f, 1.0f);
-        // mainWindow.Draw(someShape); // Draw your shape here
+        // mainWindow.Draw(someShape); // Draw your shape here // Draw is not implemented yet
         for (int y = 0; y < 30; y++) {
             for (int x = 0; x < 30; x++) {
                 mainWindow.DrawPoint(pos + x, pos + y, 1.0f, 1.0f, 1.0f);

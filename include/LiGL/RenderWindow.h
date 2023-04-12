@@ -5,13 +5,15 @@
 #include <LiGL/Shape.h>
 #include <LiGL/Event.h>
 
-class Window {
+class Window
+{
     public:
-        Window(int width, int height, std::string title, bool enableConsole = true, bool borderless = false) {
-            if (enableConsole == false) {
+        Window(int width, int height, std::string title, bool enableConsole = true, bool borderless = false)
+        {
+            if (enableConsole == false)
+            {
                 HWND console = GetConsoleWindow();
                 ShowWindow(console, SW_HIDE);
-                
             };
             isActive = true;
             m_width = width;
@@ -26,8 +28,8 @@ class Window {
             RegisterClass(&wc);
             // Create the window
             m_hWnd = CreateWindow(wc.lpszClassName, m_title.c_str(), WS_OVERLAPPEDWINDOW,
-                CW_USEDEFAULT, CW_USEDEFAULT, m_width, m_height, nullptr, nullptr,
-                GetModuleHandle(nullptr), nullptr);
+                                CW_USEDEFAULT, CW_USEDEFAULT, m_width, m_height, nullptr, nullptr,
+                                GetModuleHandle(nullptr), this);
             // Create an OpenGL context and link it to the window
             HDC hDC = GetDC(m_hWnd);
             PIXELFORMATDESCRIPTOR pfd = {0};
@@ -45,7 +47,8 @@ class Window {
             ReleaseDC(m_hWnd, hDC);
             // Show the window
             ShowWindow(m_hWnd, SW_SHOW);
-            if (borderless == true) {
+            if (borderless == true)
+            {
                 LONG_PTR dwStyle = GetWindowLongPtr(m_hWnd, GWL_STYLE);
                 dwStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
                 SetWindowLongPtr(m_hWnd, GWL_STYLE, dwStyle);
@@ -62,13 +65,15 @@ class Window {
             ReleaseDC(m_hWnd, hDC);
             DestroyWindow(m_hWnd);
         }
-        void Clear(float r, float g, float b, float a) {
+        void Clear(float r, float g, float b, float a)
+        {
             // Clear the screen
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         };
-        void Draw(Shape& shape); // not implemented yet
-        void Display() {
+        void Draw(Shape &shape); // not implemented yet
+        void Display()
+        {
             // Swap the front and back buffers
             HDC hDC = GetDC(m_hWnd);
             SwapBuffers(hDC);
@@ -78,109 +83,117 @@ class Window {
         {
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, m_width, 0, m_height, -1, 1);
+            glOrtho(0, m_width, m_height, 0, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glPointSize(1.0);
             glBegin(GL_POINTS);
             glColor3f(r, g, b);
-            glVertex2i(x, m_height - y); // OpenGL has its origin in the lower left corner
+            glVertex2i(x, y); // OpenGL has its origin in the lower left corner
             glEnd();
         }
-        bool Active() {
+        bool Active()
+        {
             return isActive;
         };
-        void Close() {
+        void Close()
+        {
             isActive = false;
         }
-        bool pollEvent(Event &event) {
+        bool pollEvent(Event &event)
+        {
             MSG msg = {};
             // Check if there is a message in the queue
-            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+            {
                 // Translate and dispatch the message
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
                 // Check the message type and return the corresponding event
                 event.key = static_cast<int>(msg.wParam);
-                switch(msg.message) {
-                    case WM_CLOSE:
-                        event.type = Event::Closed;
-                        return true;
-                    case WM_QUIT:
-                        event.type = Event::Closed;
-                        return true;
-                    case WM_KEYDOWN:
-                        event.type = Event::KeyPressed;
-                        return true;
-                    case WM_KEYUP:
-                        event.type = Event::KeyReleased;
-                        return true;
-                    case WM_LBUTTONDOWN:
-                        event.type = Event::MouseButtonPressed;
-                        return true;
-                    case WM_LBUTTONUP:
-                        event.type = Event::MouseButtonReleased;
-                        return true;
-                    case WM_RBUTTONDOWN:
-                        event.type = Event::MouseButtonPressed;
-                        return true;
-                    case WM_RBUTTONUP:
-                        event.type = Event::MouseButtonReleased;
-                        return true;
-                    case WM_SIZE:
-                        event.type = Event::Resized;
-                        event.width = LOWORD(msg.lParam);
-                        event.height = HIWORD(msg.lParam);
-                        return true;
-                    case WM_MOUSEMOVE:
-                        event.type = Event::MouseMoved;
-                        POINT mousePos = this->GetMousePosition();
-                        event.Mouse_X = mousePos.x;
-                        event.Mouse_Y = mousePos.y;
-                        return true;
+                switch (msg.message)
+                {
+                case WM_CLOSE:
+                    event.type = Event::Closed;
+                    return true;
+                case WM_QUIT:
+                    event.type = Event::Closed;
+                    return true;
+                case WM_KEYDOWN:
+                    event.type = Event::KeyPressed;
+                    return true;
+                case WM_KEYUP:
+                    event.type = Event::KeyReleased;
+                    return true;
+                case WM_LBUTTONDOWN:
+                    event.type = Event::MouseButtonPressed;
+                    return true;
+                case WM_LBUTTONUP:
+                    event.type = Event::MouseButtonReleased;
+                    return true;
+                case WM_RBUTTONDOWN:
+                    event.type = Event::MouseButtonPressed;
+                    return true;
+                case WM_RBUTTONUP:
+                    event.type = Event::MouseButtonReleased;
+                    return true;
+                case WM_SIZE:
+                    event.type = Event::Resized;
+                    event.width = LOWORD(msg.lParam);
+                    event.height = HIWORD(msg.lParam);
+                    return true;
+                case WM_MOUSEMOVE:
+                    event.type = Event::MouseMoved;
+                    POINT mousePos = this->GetMousePosition();
+                    event.Mouse_X = mousePos.x;
+                    event.Mouse_Y = mousePos.y;
+                    return true;
                     // Add cases for other message types you want to handle
                 }
             }
             // If there is no message in the queue, return NoEvent
-            event.type =  Event::NoEvent;
+            event.type = Event::NoEvent;
             return false;
         }
 
-        std::string luaPollEvent() {
+        std::string luaPollEvent()
+        {
             MSG msg = {};
             // Check if there is a message in the queue
-            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+            {
                 // Translate and dispatch the message
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
                 // Check the message type and return the corresponding event
                 this->PressedKey = static_cast<int>(msg.wParam);
-                switch(msg.message) {
-                    case WM_CLOSE:
-                        return "Closed";
-                    case WM_QUIT:
-                        return "Closed";
-                    case WM_KEYDOWN:
-                        return "KeyPressed";
-                    case WM_KEYUP:
-                        return "KeyReleased";
-                    case WM_LBUTTONDOWN:
-                        return "MouseButtonPressed";
-                    case WM_LBUTTONUP:
-                        return "MouseButtonReleased";
-                    case WM_RBUTTONDOWN:
-                        return "MouseButtonPressed";
-                    case WM_RBUTTONUP:
-                        return "MouseButtonReleased";
-                    case WM_SIZE:
-                        EventWidth = LOWORD(msg.lParam);
-                        EventHeight = HIWORD(msg.lParam);
-                        return "Resized";
-                    case WM_MOUSEMOVE:
-                        POINT mousePos = this->GetMousePosition();
-                        Mouse_X = mousePos.x;
-                        Mouse_Y = mousePos.y;
-                        return "MouseMoved";
+                switch (msg.message)
+                {
+                case WM_CLOSE:
+                    return "Closed";
+                case WM_QUIT:
+                    return "Closed";
+                case WM_KEYDOWN:
+                    return "KeyPressed";
+                case WM_KEYUP:
+                    return "KeyReleased";
+                case WM_LBUTTONDOWN:
+                    return "MouseButtonPressed";
+                case WM_LBUTTONUP:
+                    return "MouseButtonReleased";
+                case WM_RBUTTONDOWN:
+                    return "MouseButtonPressed";
+                case WM_RBUTTONUP:
+                    return "MouseButtonReleased";
+                case WM_SIZE:
+                    EventWidth = LOWORD(msg.lParam);
+                    EventHeight = HIWORD(msg.lParam);
+                    return "Resized";
+                case WM_MOUSEMOVE:
+                    POINT mousePos = this->GetMousePosition();
+                    Mouse_X = mousePos.x;
+                    Mouse_Y = mousePos.y;
+                    return "MouseMoved";
                     // Add cases for other message types you want to handle
                 }
             }
@@ -188,48 +201,54 @@ class Window {
             return "NoEvent";
         }
 
-        int luaGetPressedKey() {
+        int luaGetPressedKey()
+        {
             return PressedKey;
         }
 
-        int luaGetMouseX() {
+        int luaGetMouseX()
+        {
             return Mouse_X;
         }
 
-        int luaGetMouseY() {
+        int luaGetMouseY()
+        {
             return Mouse_Y;
         }
 
-        int luaGetEventWidth() {
+        int luaGetEventWidth()
+        {
             return EventWidth;
         }
 
-        int luaGetEventHeight() {
+        int luaGetEventHeight()
+        {
             return EventHeight;
         }
 
-        POINT GetMousePosition() {
+        POINT GetMousePosition()
+        {
             POINT mousePos;
-            GetCursorPos(&mousePos); // Get the mouse position in screen coordinates
+            GetCursorPos(&mousePos);           // Get the mouse position in screen coordinates
             ScreenToClient(m_hWnd, &mousePos); // Convert screen coordinates to client (window) coordinates
             // Adjust the y-coordinate as OpenGL has its origin in the lower left corner
-            //mousePos.y = mousePos.y;
+            // mousePos.y = mousePos.y;
             return mousePos;
         }
 
-        void updateView(int width, int height) {
+        void updateView(int width, int height)
+        {
             m_width = width;
             m_height = height;
-
             // Update the viewport
             glViewport(0, 0, m_width, m_height);
-
             // Update the projection matrix
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, m_width, 0, m_height, -1, 1);
+            glOrtho(0, m_width, m_height, 0, -1, 1); // Update the top and bottom arguments to match the new window dimensions
             glMatrixMode(GL_MODELVIEW);
         }
+
     private:
         int m_width;
         int m_height;
@@ -243,11 +262,27 @@ class Window {
         HWND m_hWnd;
         static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
-            switch (uMsg)
+            Window *pThis = nullptr;
+            if (uMsg == WM_CREATE)
             {
-            case WM_DESTROY:
-                PostQuitMessage(0);
-                return 0;
+                pThis = static_cast<Window *>(reinterpret_cast<CREATESTRUCT *>(lParam)->lpCreateParams);
+                SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
+            }
+            else
+            {
+                pThis = reinterpret_cast<Window *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+            }
+            if (pThis)
+            {
+                switch (uMsg)
+                {
+                case WM_DESTROY:
+                    PostQuitMessage(0);
+                    return 0;
+                case WM_SIZE:
+                    pThis->updateView(LOWORD(lParam), HIWORD(lParam));
+                    return 0;
+                }
             }
             return DefWindowProc(hWnd, uMsg, wParam, lParam);
         }
