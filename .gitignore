@@ -1,3 +1,5 @@
 .vscode
 build/libLiGL.o
 include\LiGL\ObjRenderer.h
+include/LiREX
+src/__LiREX__.cpp

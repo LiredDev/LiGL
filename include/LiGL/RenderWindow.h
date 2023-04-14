@@ -67,6 +67,7 @@ class Window
         }
         void setTransparency(float alpha)
         {
+            if (alpha > 1.0f) alpha /= 255;
             // Clamp the alpha value between 0.0 (transparent) and 1.0 (opaque)
             alpha = std::max(0.0f, std::min(1.0f, alpha));
             // Get the existing extended window style
@@ -86,6 +87,10 @@ class Window
         }
         void Clear(float r, float g, float b, float a)
         {
+            if (r > 1.0f) r /= 255;
+            if (g > 1.0f) g /= 255;
+            if (b > 1.0f) b /= 255;
+            if (a > 1.0f) a /= 255;
             // Clear the screen
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -100,6 +105,10 @@ class Window
         };
         void DrawPoint(int x, int y, float r, float g, float b)
         {
+            if (r > 1.0f) r /= 255;
+            if (g > 1.0f) g /= 255;
+            if (b > 1.0f) b /= 255;
+            
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glOrtho(0, m_width, m_height, 0, -1, 1);
