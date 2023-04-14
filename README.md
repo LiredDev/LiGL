@@ -35,7 +35,7 @@ This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which
 
 int main()
 {
-    Window mainWindow(800, 600, "My Rendering Engine", true, true); // create a window with a width and height of 800x600 and a title. the bool values are for enabling console and active window border
+    Window mainWindow(800, 600, "My Rendering Window", true, true); // create a window with a width and height of 800x600 and a title. the bool values are for enabling console and active window border
 
     int pos = 50;
     while (mainWindow.Active())
