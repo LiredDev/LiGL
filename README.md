@@ -13,7 +13,7 @@ for mingw:
 ```bash
 mingw32-make
 ```
-This will create a  `LiREX.exe` file in the  `build/LiREX`  directory. After it is compiled it will automatically run the program.
+This will create a  `LiGL.exe` file in the  `build/LiGL`  directory. After it is compiled it will automatically run the program.
 
 Run this to compile the Lua version, the ouput will be in the build folder.
 ```bash
