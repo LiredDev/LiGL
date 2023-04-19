@@ -3,7 +3,7 @@ allLua: CompileLuaLiGL runLuaLiGL
 
 CompileLiGL:
 	g++ -I include -c src/__LiGL__.cpp
-	g++ __LiGL__.o -o LiGL -lgdi32 -lopengl32
+	g++ __LiGL__.o -o LiGL -lgdi32 -lopengl32 -l winmm
 	move LiGL.exe "build/LiGL"
 	del __LiGL__.o
 
@@ -12,7 +12,7 @@ runLiGL:
 
 CompileLuaLiGL:
 	g++ -I include -c src/__LuaLiGL__.cpp -fpermissive
-	g++ __LuaLiGL__.o -o LuaLiGL -L lib -l gdi32 -l opengl32 -l lua
+	g++ __LuaLiGL__.o -o LuaLiGL -L lib -l gdi32 -l opengl32 -l lua -l winmm
 	del __LuaLiGL__.o
 	move LuaLiGL.exe "build/LuaLiGL"
 

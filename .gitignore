@@ -3,3 +3,6 @@ build/libLiGL.o
 include\LiGL\ObjRenderer.h
 include/LiREX
 src/__LiREX__.cpp
+include/LiGL/Audio.h
+Inst.wav
+Audio class being worked on

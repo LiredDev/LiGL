@@ -14,6 +14,20 @@ using namespace luabridge;
 
 lua_State* L;
 
+class Audio {
+    public:
+    Audio(std::string _filename) {
+        filename = _filename;
+    }
+
+    void play() {
+        PlaySound(TEXT(filename.c_str()), NULL, SND_SYNC);
+    }
+
+    private:
+    std::string filename;
+};
+
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "Missing file path" << std::endl;
@@ -23,6 +37,12 @@ int main(int argc, char* argv[]) {
 	L = luaL_newstate();
 
 	luaL_openlibs(L);
+
+    getGlobalNamespace(L)
+    .beginClass<Audio>("Audio")
+        .addConstructor<void(*)(std::string)>()
+        .addFunction("play", &Audio::play)
+    .endClass();
 
     getGlobalNamespace(L)
     .beginClass<Window>("Window")
@@ -135,6 +155,8 @@ int main(int argc, char* argv[]) {
         .addProperty("KEY_F11", &luaKeyboard::KEY_F11, false) 
         .addProperty("KEY_F12", &luaKeyboard::KEY_F12, false)
     .endClass();
+
+    
 	
 	if (luaL_dofile(L, argv[1]) != LUA_OK) {
         std::cout << lua_tostring(L,-1);

@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdlib>
 #include <Windows.h>
 #include <gl/GL.h>
@@ -67,7 +68,8 @@ class Window
         }
         void setTransparency(float alpha)
         {
-            if (alpha > 1.0f) alpha /= 255;
+            if (alpha > 1.0f)
+                alpha /= 255;
             // Clamp the alpha value between 0.0 (transparent) and 1.0 (opaque)
             alpha = std::max(0.0f, std::min(1.0f, alpha));
             // Get the existing extended window style
@@ -87,15 +89,38 @@ class Window
         }
         void Clear(float r, float g, float b, float a)
         {
-            if (r > 1.0f) r /= 255;
-            if (g > 1.0f) g /= 255;
-            if (b > 1.0f) b /= 255;
-            if (a > 1.0f) a /= 255;
+            if (r > 1.0f)
+                r /= 255;
+            if (g > 1.0f)
+                g /= 255;
+            if (b > 1.0f)
+                b /= 255;
+            if (a > 1.0f)
+                a /= 255;
             // Clear the screen
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         };
-        void Draw(Shape &shape); // not implemented yet
+        void Draw(Shape &shape)
+        {
+            // Set color for the shape
+            glColor4f(shape.m_r, shape.m_g, shape.m_b, shape.m_a);
+
+            // Translate the shape to its position
+            glPushMatrix();
+            glTranslatef(shape.m_x, shape.m_y, 0.0f);
+
+            // Iterate through the pixel coordinates and display them one by one
+            glBegin(GL_POINTS);
+            for (const auto &pixel : shape.m_pixels)
+            {
+                glVertex2f(pixel.X, pixel.Y);
+            }
+            glEnd();
+
+            // Undo the translation
+            glPopMatrix();
+        }
         void Display()
         {
             // Swap the front and back buffers
@@ -105,10 +130,13 @@ class Window
         };
         void DrawPoint(int x, int y, float r, float g, float b)
         {
-            if (r > 1.0f) r /= 255;
-            if (g > 1.0f) g /= 255;
-            if (b > 1.0f) b /= 255;
-            
+            if (r > 1.0f)
+                r /= 255;
+            if (g > 1.0f)
+                g /= 255;
+            if (b > 1.0f)
+                b /= 255;
+
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glOrtho(0, m_width, m_height, 0, -1, 1);
@@ -170,6 +198,9 @@ class Window
                     event.width = LOWORD(msg.lParam);
                     event.height = HIWORD(msg.lParam);
                     return true;
+                case WM_MOUSELEAVE:
+                    event.type = Event::MouseLeft;
+                    return true;
                 case WM_MOUSEMOVE:
                     event.type = Event::MouseMoved;
                     POINT mousePos = this->GetMousePosition();
@@ -217,6 +248,8 @@ class Window
                     EventWidth = LOWORD(msg.lParam);
                     EventHeight = HIWORD(msg.lParam);
                     return "Resized";
+                case WM_MOUSELEAVE:
+                    return "MouseLeft";
                 case WM_MOUSEMOVE:
                     POINT mousePos = this->GetMousePosition();
                     Mouse_X = mousePos.x;
@@ -309,6 +342,10 @@ class Window
                     return 0;
                 case WM_SIZE:
                     pThis->updateView(LOWORD(lParam), HIWORD(lParam));
+                    return 0;
+                case WM_MOUSELEAVE: // Add this case
+                    // Handle the mouse leave event
+                    // For example, you can set a flag or call a function here
                     return 0;
                 }
             }

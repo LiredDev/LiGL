@@ -27,7 +27,8 @@ public:
         KeyReleased,
         Closed,
         NoEvent,
-        Resized
+        Resized,
+        MouseLeft
     };
     private:
         std::unordered_map<std::string, Event::EventType> eventTypes = {
@@ -38,6 +39,7 @@ public:
             {"MouseButtonPressed", Event::MouseButtonPressed},
             {"MouseButtonReleased", Event::MouseButtonReleased},
             {"NoEvent", Event::NoEvent},
-            {"MouseMoved", Event::MouseMoved}
+            {"MouseMoved", Event::MouseMoved},
+            {"MouseLeft", Event::MouseLeft}
         };
 };

@@ -1,11 +1,13 @@
+#pragma once
 #include <vector>
 #include <LiGL/Vectors.h>
 
 class Shape {
 public:
-    Shape(std::vector<Vector2>& points, float width, float height, float x, float y, float r, float g, float b, float a) 
+    std::vector<Vector2f> m_pixels;
+    Shape(std::vector<Vector2f> points, float width, float height, float x, float y, float r, float g, float b, float a) 
     { 
-        m_points = points; 
+        m_pixels = points; 
         m_width = width; 
         m_height = height; 
         m_x = x; 
@@ -32,8 +34,6 @@ public:
         m_b = b; 
         m_a = a; 
     }
-private:
-    std::vector<Vector2> m_points;
     float m_width;
     float m_height;
     float m_x;
@@ -42,4 +42,29 @@ private:
     float m_g;
     float m_b;
     float m_a;
+};
+
+class Rectangle : public Shape
+{
+public:
+    Rectangle(float width, float height, float x, float y, float r, float g, float b, float a)
+        : Shape(getPixels(width, height), width, height, x, y, r, g, b, a), m_width(width), m_height(height)
+    {
+    }
+private:
+    std::vector<Vector2f> getPixels(float width, float height)
+    {
+        std::vector<Vector2f> pixels;
+        for (float x = -width / 2; x < width / 2; x++)
+        {
+            for (float y = -height / 2; y < height / 2; y++)
+            {
+                Vector2f pixel(x + 0.5f, y + 0.5f);
+                pixels.push_back(pixel);
+            }
+        }
+        return pixels;
+    }
+    float m_width;
+    float m_height;
 };

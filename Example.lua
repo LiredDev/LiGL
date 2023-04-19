@@ -1,18 +1,20 @@
--- Create a window with a width of 800 pixels and a height of 600 pixels
 local window = Window(800, 600, "Window Title", false, false)
-
--- Main loop
+ -- Play audio in separate thread
+local function playAudio()
+    local sound = Audio("Inst.wav")
+    sound:play()
+end
+local audioThread = coroutine.create(playAudio)
+-- coroutine.resume(audioThread) do not use uncomment this or the window will just freeze
+-- audios are not supported in lua at the moment
+ -- Main loop
 local event = Event()
 local keyboard = Keyboard()
-
-local width = 5
+ local width = 5
 local height = 5
 local i = 0
 local j = 0
-
-window:setTransparency(0.5)
-
-while window:Active() do
+ while window:Active() do
     event.Name = window:pollEvent()
     if event.Name == "Closed" then
         window:Close()
@@ -23,7 +25,6 @@ while window:Active() do
     end
     if event.Name == "KeyPressed" then
         local key = window:GetPressedKey()
-        print(key, keyboard.KEY_A)
         if key == keyboard.KEY_A then
             i = i - 1
         end
@@ -37,8 +38,7 @@ while window:Active() do
             j = j + 1
         end
     end
-
-    window:Clear(0, 0, 0, 0)
+     window:Clear(0, 0, 0, 0)
     for y = 0, height, 1 do
         for x = 0, width, 1 do
             window:drawPoint(i + x, j + y, 255, 0, 0)

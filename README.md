@@ -1,5 +1,11 @@
  # LiGL - Lired Graphics Library
  LiGL is a library for creating windows and drawing graphics on them. It is similar to SFML, but the key feature of LiGL is that it also supports Lua. This means that you can use Lua to create windows, draw graphics on them, and handle events.
+ ## Update logs
+ - Added Threads (because mingw doesn't support them by default)
+ - Set window transparency
+ - Remove window border (the last bool value removes the border when set to true)`Window mainWindow(800, 600, "LiGL - Test", false, false);`
+ ## Note
+ - The code currently is a mess but i promise to organize it later
  ## Features
  - Easy-to-use API for creating windows and drawing graphics
 - Supports Lua scripting for creating windows and handling events
@@ -28,52 +34,115 @@ This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which
  ## Usage
  To use LiGL in your project, you need to include the  `LiGL.h`  header file. Here's an example program that creates a window and draws a red circle in the center:
 ```cpp
-#include <LiGL/LiGL.h>
-#include <iostream>
+#include <LiGL/LiGL.h>               // Include LiGL library
+#include <iostream>                  // Include iostream library
+#include <chrono>                    // Include chrono library
+#include <LiGL/Shape.h>              // Include Shape library
+#include <LiGL/Thread.h>             // Include Thread library
+#pragma comment(lib, "opengl32.lib") // Link opengl library
 
-#pragma comment(lib, "opengl32.lib")
-
+// Function to play audio
+void playAudio()
+{
+    PlaySound(TEXT("Inst.wav"), NULL, SND_SYNC);
+}
+// Class to create a thread
+class MyThread : public Thread
+{
+public:
+    // Override run function
+    virtual void run()
+    {
+        playAudio();
+    }
+};
 int main()
 {
-    Window mainWindow(800, 600, "My Rendering Engine", true, true); // create a window with a width and height of 800x600 and a title. the bool values are for enabling console and active window border
-
-    int pos = 50;
+    // Create a window with 800 width, 600 height, title "LiGL - Test", with console disabled and border enabled
+    Window mainWindow(800, 600, "LiGL - Test", false, false);
+    // Get the last time
+    auto last_time = std::chrono::high_resolution_clock::now();
+    // Delta time
+    float delta_time = 0.0f;
+    // X and Y coordinates
+    float X = 50;
+    float Y = 50;
+    // Speed of the point
+    float speed = 500;
+    // Create a thread
+    MyThread t;
+    t.start();
+    // Main loop
     while (mainWindow.Active())
     {
+        // Get current time
+        auto current_time = std::chrono::high_resolution_clock::now();
+        // Calculate elapsed time
+        std::chrono::duration<float> elapsed_time = current_time - last_time;
+        // Set last time to current time
+        last_time = current_time;
+        // Set delta time
+        delta_time = elapsed_time.count();
+        // Create an event
         Event event;
-        mainWindow.pollEvent(event); // self explanatory, stores current happening events in the event class
-        switch (event.type) { // Check for the event type
-            case Event::Closed:
-                mainWindow.Close(); // close the window
-                break;
-            case Event::Resized:
-                mainWindow.updateView(event.width, event.height); // update the view whenever the window is resized
-                break;
-            case Event::KeyPressed: // Check for key presses
-                std::cout << event.key << std::endl;
-                if (event.key == Keyboard::KEY_D) {
-                    pos++;
-                }
-                break;
-            case Event::KeyReleased: // Check for key releases
-                std::cout << event.key << std::endl;
-                break;
-            case Event::MouseMoved: // Check for mouse movement
-                std::cout << event.Mouse_X << ", " << event.Mouse_Y << "\n";
-            // Add cases for other event types you want to handle
+        // Poll the event
+        mainWindow.pollEvent(event);
+        // Switch statement for event type
+        switch (event.type)
+        {
+        case Event::Closed:
+            // Close the window
+            mainWindow.Close();
+            break;
+        case Event::Resized:
+            // Update view
+            mainWindow.updateView(event.width, event.height);
+            break;
+        case Event::KeyPressed:
+            // Print key pressed
+            std::cout << event.key << std::endl;
+            // Move the point based on key pressed
+            if (event.key == Keyboard::KEY_D)
+            {
+                X += speed * delta_time;
+            }
+            if (event.key == Keyboard::KEY_A)
+            {
+                X -= speed * delta_time;
+            }
+            if (event.key == Keyboard::KEY_W)
+            {
+                Y -= speed * delta_time;
+            }
+            if (event.key == Keyboard::KEY_S)
+            {
+                Y += speed * delta_time;
+            }
+            break;
+        case Event::KeyReleased:
+            // Print key released
+            std::cout << event.key << std::endl;
+            break;
+        case Event::MouseMoved:
+            break;
+        case Event::MouseLeft:
+            // Print mouse left
+            std::cout << "Mouse Left" << std::endl;
+            break;
         }
-
-        // This is your main loop, where you can call Clear(), Draw(), and Display() functions
+        // Clear the window
         mainWindow.Clear(0.0f, 0.0f, 0.4f, 1.0f);
-        // mainWindow.Draw(someShape); // TODO: implement ability to create shapes and draw them
-        for (int y = 0; y < 30; y++) {
-            for (int x = 0; x < 30; x++) {
-                mainWindow.DrawPoint(pos + x, pos + y, 1.0f, 1.0f, 1.0f); // draw a point on the screen
+        // Draw a point at X and Y coordinates
+        for (int y = 0; y < 30; y++)
+        {
+            for (int x = 0; x < 30; x++)
+            {
+                mainWindow.DrawPoint(X + x, Y + y, 1, 1, 1);
             }
         }
-        mainWindow.Display(); // display everything
+        // Display the window
+        mainWindow.Display();
     }
-
     return 0;
 }
 ```
