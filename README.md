@@ -58,21 +58,9 @@ public:
 };
 int main()
 {
-    // Create a window with 800 width, 600 height, title "LiGL - Test", with console disabled and border enabled
-    Window mainWindow(800, 600, "LiGL - Test", false, false);
-    // Get the last time
-    auto last_time = std::chrono::high_resolution_clock::now();
-    // Delta time
-    float delta_time = 0.0f;
-    // X and Y coordinates
-    float X = 50;
-    float Y = 50;
-    // Speed of the point
-    float speed = 500;
-    // Create a thread
-    MyThread t;
-    t.start();
-    // Main loop
+    Window mainWindow(800, 600, "My Rendering Engine", true, true); // create a window with a width and height of 800x600 and a title. the bool values are for enabling console and active window border
+
+    int pos = 50;
     while (mainWindow.Active())
     {
         // Get current time
