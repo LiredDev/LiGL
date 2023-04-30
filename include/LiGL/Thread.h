@@ -1,5 +1,5 @@
 // this was added because mingw doesnt have threads by default
-
+#pragma once
 #include <windows.h>
 #include <process.h>
 

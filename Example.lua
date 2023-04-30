@@ -1,19 +1,14 @@
 local window = Window(800, 600, "Window Title", false, false)
- -- Play audio in separate thread
-local function playAudio()
-    local sound = Audio("Inst.wav")
-    sound:play()
-end
-local audioThread = coroutine.create(playAudio)
--- coroutine.resume(audioThread) do not use uncomment this or the window will just freeze
--- audios are not supported in lua at the moment
- -- Main loop
+
 local event = Event()
 local keyboard = Keyboard()
- local width = 5
+
+local width = 5
 local height = 5
+
 local i = 0
 local j = 0
+
  while window:Active() do
     event.Name = window:pollEvent()
     if event.Name == "Closed" then

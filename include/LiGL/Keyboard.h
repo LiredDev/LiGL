@@ -1,3 +1,4 @@
+#pragma once
 class Keyboard {
 public:
     static const int KEY_A = 0x41;

@@ -1,26 +1,8 @@
 #include <LiGL/LiGL.h>               // Include LiGL library
 #include <iostream>                  // Include iostream library
 #include <chrono>                    // Include chrono library
-#include <LiGL/Shape.h>              // Include Shape library
-#include <LiGL/Audio.h>              // Include Audio library
-#include <LiGL/Thread.h>             // Include Thread library
 #pragma comment(lib, "opengl32.lib") // Link opengl library
 
-// Function to play audio
-void playAudio()
-{
-    PlaySound(TEXT("Inst.wav"), NULL, SND_SYNC);
-}
-// Class to create a thread
-class MyThread : public Thread
-{
-public:
-    // Override run function
-    virtual void run()
-    {
-        playAudio();
-    }
-};
 int main()
 {
     // Create a window with 800 width, 600 height, title "LiGL - Test", no fullscreen and no vsync
@@ -34,9 +16,6 @@ int main()
     float Y = 50;
     // Speed of the point
     float speed = 500;
-    // Create a thread
-    MyThread t;
-    t.start();
     // Main loop
     while (mainWindow.Active())
     {

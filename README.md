@@ -32,35 +32,27 @@ mingw32-make allLua
 This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which is the lua interpreter that has all the features in the c++ version. After it is compiled it will automatically run the test file.
 
  ## Usage
- To use LiGL in your project, you need to include the  `LiGL.h`  header file. Here's an example program that creates a window and draws a red circle in the center:
+ To use LiGL in your project, you need to include the  `LiGL.h`  header file. Here's an example program that creates a window and draws a white square that can be controlled with wasd:
 ```cpp
 #include <LiGL/LiGL.h>               // Include LiGL library
 #include <iostream>                  // Include iostream library
 #include <chrono>                    // Include chrono library
-#include <LiGL/Shape.h>              // Include Shape library
-#include <LiGL/Thread.h>             // Include Thread library
 #pragma comment(lib, "opengl32.lib") // Link opengl library
 
-// Function to play audio
-void playAudio()
-{
-    PlaySound(TEXT("Inst.wav"), NULL, SND_SYNC);
-}
-// Class to create a thread
-class MyThread : public Thread
-{
-public:
-    // Override run function
-    virtual void run()
-    {
-        playAudio();
-    }
-};
 int main()
 {
-    Window mainWindow(800, 600, "My Rendering Engine", true, true); // create a window with a width and height of 800x600 and a title. the bool values are for enabling console and active window border
-
-    int pos = 50;
+    // Create a window with 800 width, 600 height, title "LiGL - Test", no fullscreen and no vsync
+    Window mainWindow(800, 600, "LiGL - Test", false, false);
+    // Get the last time
+    auto last_time = std::chrono::high_resolution_clock::now();
+    // Delta time
+    float delta_time = 0.0f;
+    // X and Y coordinates
+    float X = 50;
+    float Y = 50;
+    // Speed of the point
+    float speed = 500;
+    // Main loop
     while (mainWindow.Active())
     {
         // Get current time
@@ -135,21 +127,20 @@ int main()
 }
 ```
 This program creates a window using the  `Window`  class, draws a red square using the  `DrawPoint`  function, and displays the window using the  `Display`  method. The program then enters a loop that waits for the window to close, and calls the  `pollEvents`  method to handle events.
- You can also use Lua to create windows and handle events. Here's an example Lua script that creates a window and displays a message when the window is closed:
+ You can also use Lua to create windows and handle events. Here's an example Lua script that creates a window and displays a square that can be moved using wasd:
 ```lua
--- Create a window with a width of 800 pixels and a height of 600 pixels
-local window = Window(800, 600, "Window Title", false, true)
+local window = Window(800, 600, "Window Title", false, false)
 
--- Main loop
 local event = Event()
 local keyboard = Keyboard()
 
 local width = 5
 local height = 5
+
 local i = 0
 local j = 0
 
-while window:Active() do
+ while window:Active() do
     event.Name = window:pollEvent()
     if event.Name == "Closed" then
         window:Close()
@@ -160,34 +151,28 @@ while window:Active() do
     end
     if event.Name == "KeyPressed" then
         local key = window:GetPressedKey()
-        print(key, keyboard.KEY_A)
         if key == keyboard.KEY_A then
-            i = i - 1 
+            i = i - 1
         end
         if key == keyboard.KEY_D then
-            i = i + 1 
+            i = i + 1
         end
         if key == keyboard.KEY_W then
-            j = j - 1 
+            j = j - 1
         end
         if key == keyboard.KEY_S then
-            j = j + 1 
+            j = j + 1
         end
     end
-
-    window:Clear(0, 0, 0, 0)
+     window:Clear(0, 0, 0, 0)
     for y = 0, height, 1 do
         for x = 0, width, 1 do
             window:drawPoint(i + x, j + y, 255, 0, 0)
         end
     end
-
-    if event.Name == "MouseMoved" then
-        print(window:GetMouseX() , window:GetMouseY())
-        for y = 0, 10, 1 do
-            for x = 0, 10, 1 do
-                window:drawPoint(window:GetMouseX() + x, window:GetMouseY() + y, 255, 255, 255)
-            end
+    for y = 0, 10, 1 do
+        for x = 0, 10, 1 do
+            window:drawPoint(window:GetMouseX() + x, window:GetMouseY() + y, 30, 128, 50)
         end
     end
     window:Display()
