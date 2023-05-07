@@ -44,10 +44,10 @@ public:
     float m_a;
 };
 
-class Rectangle : public Shape
+class RectangleShape : public Shape
 {
 public:
-    Rectangle(float width, float height, float x, float y, float r, float g, float b, float a)
+    RectangleShape(float width, float height, float x, float y, float r, float g, float b, float a)
         : Shape(getPixels(width, height), width, height, x, y, r, g, b, a), m_width(width), m_height(height)
     {
     }
@@ -68,3 +68,30 @@ private:
     float m_width;
     float m_height;
 };
+
+class CircleShape : public Shape 
+{ 
+public: 
+    CircleShape(float radius, float x, float y, float r, float g, float b, float a) 
+        : Shape(getPixels(radius), radius * 2, radius * 2, x, y, r, g, b, a), m_radius(radius) 
+    { 
+    } 
+private: 
+    std::vector<Vector2f> getPixels(float radius) 
+    { 
+        std::vector<Vector2f> pixels; 
+        for (float x = -radius; x <= radius; x++) 
+        { 
+            for (float y = -radius; y <= radius; y++) 
+            { 
+                if (x * x + y * y <= radius * radius) 
+                { 
+                    Vector2f pixel(x + radius + 0.5f, y + radius + 0.5f); 
+                    pixels.push_back(pixel); 
+                } 
+            } 
+        } 
+        return pixels; 
+    } 
+    float m_radius; 
+}; 
