@@ -41,7 +41,7 @@ This will create a  `LuaLiGL.exe` file in the  `build/LuaLiGL`  directory, which
 
 int main()
 {
-    // Create a window with 800 width, 600 height, title "LiGL - Test", no fullscreen and no vsync
+    // Create a window with 800 width, 600 height, title "LiGL - Test"
     Window mainWindow(800, 600, "LiGL - Test", false, false);
     // Get the last time
     auto last_time = std::chrono::high_resolution_clock::now();
