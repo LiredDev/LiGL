@@ -18,7 +18,8 @@ int main()
     float speed = 500;
 
     RectangleShape rect(20, 40, 20, 20, 20, 1, 1, 1);
-    CircleShape circle(100, 200, 200, 200, 1, 0, 0);
+    CircleShape circle(30, 200, 200, 200, 1, 0, 0);
+    TriangleShape triangle(150, 60, 300, 300, 1, 1, 0, 1);
     // Main loop
     while (mainWindow.Active())
     {
@@ -82,6 +83,7 @@ int main()
         // Draw a point at X and Y coordinates
         mainWindow.Draw(rect);
         mainWindow.Draw(circle);
+        mainWindow.Draw(triangle);
         for (int y = 0; y < 30; y++)
         {
             for (int x = 0; x < 30; x++)
